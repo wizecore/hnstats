@@ -4,7 +4,7 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 ## Roadmap
 - Gather data (DONE)
 - Produce JSON (DONE)
-- Every term - animated related words through year (DONE)
+- For selected terms - related words trending through years 2007 - 2017 (DONE)
 - All terms - counts every year (TODO)
 - Term cleanup (TODO)
 
