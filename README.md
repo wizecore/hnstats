@@ -1,5 +1,5 @@
-# hnstats
-HackerNews analytics
+# HackerNews analytics
+Using Google BigQuery public dataset produce some insight into the most discussed topics.
 
 ## Roadmap
 - Gather data (DONE)
