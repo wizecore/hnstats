@@ -6,7 +6,7 @@ HackerNews analytics
 
 ## Demo
 This demo is single page HTML
-http://xn--80aebfue2acj0bk.xn--p1ai/hnstats/terms.html
+http://гайнутдинов.рф/hnstats/terms.html
 
 ## Source repo
 https://github.com/huksley/hnstats
