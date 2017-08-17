@@ -7,6 +7,7 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 - For selected terms - related words trending through years 2007 - 2017 (DONE)
 - All terms - counts every year (TODO)
 - Term cleanup (TODO)
+- Fine tune word2vec params (see below)
 
 ## Demo
 http://гайнутдинов.рф/hnstats/terms.html
@@ -23,3 +24,19 @@ https://github.com/huksley/hnstats
 3. Fine tune queries inside code (terms, periods)
 4. Produce data.json
 5. Modify terms.json
+
+## Word2vec tuning
+
+Help is welcome in fine tuning word2vec parameters. Here is current setup:
+
+```java
+Word2Vec vec = new Word2Vec.Builder()
+                .minWordFrequency(5)
+                .iterations(1)
+                .layerSize(100)
+                .seed(System.currentTimeMillis())
+                .windowSize(5)
+                .iterate(iter)
+                .tokenizerFactory(t)
+                .build();
+```
