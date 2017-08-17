@@ -1,0 +1,9 @@
+raw.txt
+raw2.txt
+out.txt
+.classpath
+.settings
+.project
+target
+lib
+google-creds.json
