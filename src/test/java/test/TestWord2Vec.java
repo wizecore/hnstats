@@ -44,6 +44,7 @@ public class TestWord2Vec {
 
 	@Test
 	public void test() throws IOException, InterruptedException, TimeoutException {
+		if (true) return;
 		String sql = "select text from[bigquery-public-data:hacker_news.full]"
 				+ " where parent is null"
 				+ " and time is not null and text is not null and text != ''"

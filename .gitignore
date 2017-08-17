@@ -7,3 +7,6 @@ out.txt
 target
 lib
 google-creds.json
+*.tsv
+*.log
+*.dll
