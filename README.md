@@ -7,6 +7,7 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 - For selected terms - related words trending through years 2007 - 2017 (DONE)
 - All terms - counts every year (TODO)
 - Term cleanup (TODO)
+- Auto build SPA (push -> CI -> deploy)
 - Fine tune word2vec params (see below)
 
 ## Demo
