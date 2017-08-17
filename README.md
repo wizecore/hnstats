@@ -5,8 +5,9 @@ HackerNews analytics
 - All terms - counts every year (TODO)
 
 ## Demo
-This demo is single page HTML
 http://гайнутдинов.рф/hnstats/terms.html
+
+Demo is single page HTML with all data precomputed and embedded.
 
 ## Source repo
 https://github.com/huksley/hnstats
