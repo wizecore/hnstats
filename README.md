@@ -1,8 +1,8 @@
 # hnstats
 HackerNews analytics
 
-- Every term - animated related words through year
-- All terms - counts every year
+- Every term - animated related words through year (DONE)
+- All terms - counts every year (TODO)
 
 Demo:
 
