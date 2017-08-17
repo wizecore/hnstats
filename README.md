@@ -1,8 +1,12 @@
 # hnstats
 HackerNews analytics
 
+## Roadmap
+- Gather data (DONE)
+- Produce JSON (DONE)
 - Every term - animated related words through year (DONE)
 - All terms - counts every year (TODO)
+- Term cleanup (TODO)
 
 ## Demo
 http://гайнутдинов.рф/hnstats/terms.html
