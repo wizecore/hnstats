@@ -27,7 +27,7 @@ https://github.com/huksley/hnstats
 
 ## Word2vec tuning
 
-Help is welcome in fine tuning word2vec parameters. Here is current setup:
+**Help is welcome** in fine-tuning word2vec parameters. Here is current setup:
 
 ```java
 Word2Vec vec = new Word2Vec.Builder()
