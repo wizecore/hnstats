@@ -5,8 +5,8 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 - Gather data (DONE)
 - Produce JSON (DONE)
 - For selected terms - related words trending through years 2007 - 2017 (DONE)
-- All terms - counts every year (TODO)
-- Term cleanup (TODO)
+- All terms - display counts every year (TODO)
+- Term cleanup (DONE)
 - Auto build SPA, i.e. push -> CI -> deploy (TODO)
 - Fine tune word2vec params (see below)
 
@@ -16,7 +16,7 @@ http://wizecore.com/hnstats/terms.html
 Demo is single page HTML with all data precomputed and embedded.
 
 ## Source repo
-https://github.com/huksley/hnstats
+https://github.com/wizecore/hnstats
 
 ## Building manually
 
