@@ -1,6 +1,6 @@
 # HackerNews analytics
 
-[HackerNews analytics](hnstats-ewan-robertson-208059.jpg)
+![HackerNews analytics](hnstats-ewan-robertson-208059.jpg)
 
 Using Google BigQuery public dataset produce some insight into the most discussed topics.
 
