@@ -1,8 +1,17 @@
-# HackerNews analytics
-
 ![HackerNews analytics](hnstats-ewan-robertson-208059.jpg)
 
-Using Google BigQuery public dataset produce some insight into the most discussed topics.
+Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
+
+## Ultimate reason
+
+  * Most discussed topics (and yearly shift)
+  * Top technology and startups
+
+## Technology behind it
+
+  * Java
+  * Deeplearning4J
+  * Word2vec
 
 ## Roadmap
 - Gather data (DONE)
