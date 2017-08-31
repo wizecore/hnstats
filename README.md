@@ -13,6 +13,10 @@ Using publicically available [HackerNews](https://news.ycombinator.com) dataset 
   * Deeplearning4J
   * Word2vec
 
+## Project
+
+[Online version](http://wizecore.com/hnstats/terms.html)
+
 ## Roadmap
 - Gather data (DONE)
 - Produce JSON (DONE)
@@ -22,13 +26,9 @@ Using publicically available [HackerNews](https://news.ycombinator.com) dataset 
 - Auto build SPA, i.e. push -> CI -> deploy (TODO)
 - Fine tune word2vec params (see below)
 
-## Demo
-http://wizecore.com/hnstats/terms.html
-
-Demo is single page HTML with all data precomputed and embedded.
-
 ## Source repo
-https://github.com/wizecore/hnstats
+
+Project is hosted on [GitHub](https://github.com/wizecore/hnstats)
 
 ## Building manually
 
@@ -36,7 +36,7 @@ https://github.com/wizecore/hnstats
 2. Fork this repo
 3. Fine tune queries inside code (terms, periods)
 4. Produce data.json
-5. Modify terms.json
+5. Modify terms.html
 
 ## Word2vec tuning
 
