@@ -11,7 +11,7 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 - Fine tune word2vec params (see below)
 
 ## Demo
-http://гайнутдинов.рф/hnstats/terms.html
+http://wizecore.com/hnstats/terms.html
 
 Demo is single page HTML with all data precomputed and embedded.
 
