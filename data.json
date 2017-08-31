@@ -22,7 +22,7 @@
 [ "year-2008", "modern", 1208, "neuro", 6, "classical", 206, "brokenness", 10, "waged", 10, "industrial", 266, "western", 363, "ecology", 21, "contemporary", 63, "photovoltaic", 16, "cnc", 13],
 [ "year-2008", "money", 11383, "cash", 1786, "profit", 1280, "discretionary", 29, "charity", 221, "profits", 546, "borrow", 217, "loan", 388, "loaning", 19, "investments", 510, "investment", 1709],
 [ "year-2008", "chat", 605, "im", 661, "gtalk", 56, "calendar", 288, "chatting", 108, "jabber", 68, "connect", 542, "notifications", 103, "chats", 32, "messaging", 296, "invites", 180],
-[ "year-2008", "startup", 8760, "start-up", 769, "company", 9987, "startups", 4431, "cofounder", 830, "angel-funded", 8, "solo", 132, "self-funded", 41, "bootstrapped", 108, "bootstrapping", 222, "firm", 776]
+[ "year-2008", "startup", 8760, "start-up", 769, "company", 9987, "startups", 4431, "cofounder", 830, "angel-funded", 8, "solo", 132, "self-funded", 41, "bootstrapped", 108, "bootstrapping", 222, "firm", 776],
 [ "year-2009", "bank", 2441, "deposit", 205, "merchant", 291, "debit", 89, "loan", 649, "credit", 3101, "account", 6077, "banks", 1483, "mortgage", 540, "debt", 1525, "payments", 806],
 [ "year-2009", "finance", 1006, "financial", 3039, "firms", 865, "entrepreneurship", 632, "biotech", 138, "accounting", 587, "banking", 738, "pe", 63, "microfinance", 26, "endowments", 24, "partnerships", 139],
 [ "year-2009", "fintech", 0],
