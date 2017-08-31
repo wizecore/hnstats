@@ -12,3 +12,4 @@ google-creds.json
 *.dll
 google-creds*.json
 *.db
+*model*.zip

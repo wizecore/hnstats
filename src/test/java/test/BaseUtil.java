@@ -1,6 +1,7 @@
 package test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.sequencevectors.SequenceVectors;
 import org.deeplearning4j.models.sequencevectors.enums.ListenerEvent;
 import org.deeplearning4j.models.sequencevectors.interfaces.VectorsListener;
@@ -24,6 +26,7 @@ import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
+import org.deeplearning4j.util.ModelSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -236,6 +239,9 @@ public class BaseUtil {
 
 			log.info(label + ": Fitting Word2Vec model from " + cnt + " topics");
 			vec.fit();
+			
+			log.info(label + ": Saving model");
+			WordVectorSerializer.writeWord2VecModel(vec, new File(label + "-model.zip"));
 
 			VocabCache<VocabWord> vocab = vec.getVocab();
 			for (int i = 0; i < words.length; i++) {
