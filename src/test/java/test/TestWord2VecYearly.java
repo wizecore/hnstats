@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.auth.ServiceAccountSigner;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
@@ -42,22 +43,23 @@ import com.google.cloud.bigquery.JobInfo;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.QueryResponse;
 import com.google.cloud.bigquery.QueryResult;
+import com.google.common.util.concurrent.RateLimiter;
 
-public class TestWord2VecYearly {
+public class TestWord2VecYearly extends BaseUtil {
 	Logger log = LoggerFactory.getLogger(getClass().getName());
+	RateLimiter qrate = RateLimiter.create(500);
 
 	@After
 	public void tearDown() throws Exception {
 	}
 	
-	private Object threadLock = new Object();
 	
 	@Test
 	public void test() throws IOException, InterruptedException, TimeoutException, ExecutionException {
 		ExecutorService threads = null; 
 		// threads = Executors.newFixedThreadPool(3);
-		int s = 2006;
-		int e = 2017;
+		int s = 2011;
+		int e = 2013;
 		String[] words = { "bank", "finance", "fintech", "latest", "modern", "money", "chat", "startup" };
 		Calendar st = Calendar.getInstance();
 		Calendar en = Calendar.getInstance();
@@ -129,6 +131,7 @@ public class TestWord2VecYearly {
 				+ " and deleted is null or deleted is false"
 				+ " order by id asc "
 				+ " limit 1000000";
+		qrate.acquire(100000);
 		QueryResult result = query(label, sql);
 		
 		LinkedList<Long> ids = new LinkedList<>();
@@ -136,13 +139,19 @@ public class TestWord2VecYearly {
 		
 		FileOutputStream fos = new FileOutputStream("out-" + label + "-top.tsv");
 		OutputStreamWriter fw = new OutputStreamWriter(fos, "UTF-8");
+		
+		long st = System.currentTimeMillis(); 
+		//qrate.acquire((int) result.getTotalRows());
+		long en = System.currentTimeMillis(); 
+		log.info("Waited for query rate " + (en - st) + "ms");
+		
 		parse(label, result, ids, ll, fw);
 		fw.close();
 		fos.close();
 		
 		log.info(label + ": Got " + ll.size() + " lines in top result, " + ids.size() + " ids");
 		
-		int b = 20000;
+		int b = 10000;
 		int done = 0;
 		int batch = 1;
 		log.info(label + ": Query top comments, batches of " + b);
@@ -166,11 +175,18 @@ public class TestWord2VecYearly {
 					+ " and deleted is null or deleted is false"
 					+ " order by id asc "
 					+ " limit 100000";
+			qrate.acquire(100000);
 			result = query(label, sql);
 			log.info(label + ": Total rows in batch: " + result.getTotalRows());
 			
 			fos = new FileOutputStream("out-" + label + "-batch-" + batch + ".tsv");
 			fw = new OutputStreamWriter(fos, "UTF-8");
+			
+			st = System.currentTimeMillis(); 
+			//qrate.acquire((int) result.getTotalRows());
+			en = System.currentTimeMillis(); 
+			log.info("Waited for query rate " + (en - st) + "ms");
+			
 			// Don`t keep IDs, parse only top level
 			parse(label, result, new LinkedList<Long>(), ll, fw);
 			fw.close();
@@ -196,9 +212,9 @@ public class TestWord2VecYearly {
 					ids.add(id);
 					StringBuilder topic = new StringBuilder();
 					// title
-					parseValue(topic, row.get(1));
+					parseValue(topic, unfv(row.get(1)));
 					// text
-					parseValue(topic, row.get(2));
+					parseValue(topic, unfv(row.get(2)));
 					
 					if (out != null) {
 						out.write(String.valueOf(id));
@@ -215,53 +231,11 @@ public class TestWord2VecYearly {
 		}
 	}
 	
-	Pattern tags = Pattern.compile("\\<[^>]*>");
-	Pattern urls = Pattern.compile( "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)", Pattern.CASE_INSENSITIVE);
-	Pattern punctuation = Pattern.compile("[\\d\\.:,\"\'\\(\\)\\[\\]|/?!;]+");
-	Pattern email = Pattern.compile("([^.@\\s]+)(\\.[^.@\\s]+)*@([^.@\\s]+\\.)+([^.@\\s]+)");
-	Pattern spaces = Pattern.compile("[ ]+");
-	
-	public void parseValue(StringBuilder topic, FieldValue val) {
-		String sss = val.getStringValue();
-		if (sss != null) {
-			// Somehow bigdata result have / replaced by &#x2f; in urls
-			sss = sss.replace("&#x2F;", "/");
-			sss = tags.matcher(sss).replaceAll(" ");
-			sss = urls.matcher(sss).replaceAll(" ");
-			sss = email.matcher(sss).replaceAll(" ");
-			sss = sss.replace("&gt;", ">");
-			sss = sss.replace("&lt;", "<");
-			sss = sss.replace("&amp;", "&");
-			sss = sss.replace("&nbsp;", " ");
-			sss = sss.replace(" nbsp;", " ");
-			sss = sss.replace("&quot;", "\"");
-			sss = sss.replaceAll("\\&\\#[0-9a-zA-Z]*;", " ");
-			sss = punctuation.matcher(sss).replaceAll(" ");
-			sss = sss.replace("#", " ");
-			sss = sss.replace("$", " ");
-			sss = sss.replace("co-founder", "cofounder");
-			sss = sss.replace("Co-Founder", "cofounder");
-			sss = sss.replace("_", " ");
-			sss = sss.replace("n’t", "not");
-			sss = sss.replace("…", " ");
-			sss = sss.replace("‘", " ");
-			sss = sss.replace("’", " ");
-			sss = sss.replace("–", "-");
-			sss = sss.replace("`", " ");
-			sss = sss.replace("€", " ");
-			sss = sss.replace("%", " ");
-			sss = sss.replace("“", " ");
-			sss = sss.replace("”", " ");
-			sss = sss.replace("*", " ");
-			sss = sss.replace("\r", " ");
-			sss = sss.replace("\n", " ");
-			sss = sss.replace("™", " ");
-			sss = spaces.matcher(sss).replaceAll(" ");
-			sss = sss.trim();
-			topic.append(sss);
-			topic.append(" ");
-		}
+
+	private String unfv(FieldValue fv) {
+		return fv != null ? fv.getStringValue() : null;
 	}
+
 
 	public QueryResult query(String label, String sql)
 			throws IOException, FileNotFoundException, InterruptedException, TimeoutException {
@@ -269,13 +243,17 @@ public class TestWord2VecYearly {
 			log.info(label + ": Building query config");
 			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(sql).build();
 			log.info(label + ": Building BigQuery engine");
-			String projectId = "testhn-177017";
-			if (System.getenv("PROJECTID") != null) {
-				projectId = System.getenv("PROJECTID");
+			String projectId = System.getenv("PROJECTID");
+			GoogleCredentials cred = GoogleCredentials.fromStream(new FileInputStream("google-creds.json"));
+			if (projectId == null && cred instanceof ServiceAccountSigner) {
+				ServiceAccountSigner s = (ServiceAccountSigner) cred;
+				projectId = s.getAccount().replaceAll("^.*@", "").replaceAll("\\..*", "");
 			}
+			
+			// "testhn-177017";
 			BigQuery bigquery = BigQueryOptions.newBuilder()
 					.setProjectId(projectId)
-					.setCredentials(GoogleCredentials.fromStream(new FileInputStream("google-creds.json")))
+					.setCredentials(cred)
 					.build()
 					.getService();
 			log.info(label + ": Declaring job");
@@ -290,44 +268,5 @@ public class TestWord2VecYearly {
 		}
 	}
 
-	public void learn(String label, String[] words, LinkedList<String> ll, StringBuilder out) throws IOException {
-		synchronized (threadLock) {
-			int cnt = ll.size();
-			log.info(label + ": Load & Vectorize Sentences from " + cnt + " topics");
-			SentenceIterator iter = new ListSequenceIterator(ll);
-			TokenizerFactory t = new DefaultTokenizerFactory();
-			t.setTokenPreProcessor(new CommonPreprocessor());
-			
-			log.info(label + ": Building model from " + cnt + " topics");
-			Word2Vec vec = new Word2Vec.Builder()
-		        .minWordFrequency(5)
-		        .iterations(1)
-		        .layerSize(100)
-		        .seed(System.currentTimeMillis())
-		        .windowSize(5)
-		        .iterate(iter)
-		        .tokenizerFactory(t)
-		        .build();
-			
-			log.info(label + ": Fitting Word2Vec model from " + cnt + " topics");
-			vec.fit();
-
-			VocabCache<VocabWord> vocab = vec.getVocab();
-			for (int i = 0; i < words.length; i++) {
-			    Collection<String> lst = vec.wordsNearest(words[i], 10);
-				VocabWord tt = vocab.tokenFor(words[i]);
-				long wc = tt != null ? tt.getSequencesCount() : 0;
-			    out.append("[ \"" + label + "\", \"" + words[i] + "\", " + wc);
-			    for (Iterator<String> it = lst.iterator(); it.hasNext();) {
-			    	String nn = it.next();
-			    	out.append(", \"");
-					out.append(nn);
-					out.append("\", ");
-					out.append(vocab.tokenFor(nn).getSequencesCount());
-			    }
-			    out.append("],\n");
-			}
-		}
-	}
 
 }

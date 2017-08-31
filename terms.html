@@ -43,10 +43,10 @@
 	</style>
 </head>
 <body>
-<h1>Closest words to selected terms (word2vec) at Hacker News 2007 - 2017 articles and top level comments</h1>
+<h1>Closest words to selected terms (word2vec) at Hacker News 2007 - 2017 articles and comments</h1>
 <div>
 	<code>
-		Google BigQuery <a href="https://cloud.google.com/bigquery/public-data/hacker-news">hackernews</a> dataset -> 
+		<a href="https://news.ycombinator.com">Hackernews</a> titles, texts &amp; comments ->
 		<a href="https://deeplearning4j.org/word2vec">deeplearning4j word2vec</a> -> json -> <a href="https://github.com/jasondavies/d3-cloud">d3 cloud renderer</a>
 	</code>
 	
@@ -72,22 +72,30 @@
 
 <script defer>
 var data = [
-[ "year-2007", "bank", 129, "loan", 52, "cash", 272, "contract", 98, "fee", 85, "card", 175, "expenses", 79, "savings", 50, "profits", 64, "tax", 89, "debt", 82],
-[ "year-2007", "finance", 97, "expertise", 67, "pakistan", 7, "economical", 12, "staff", 58, "bringing", 87, "aspiring", 21, "banking", 40, "charities", 8, "poland", 10, "persons", 18],
+[ "year-2006", "bank", 0],
+[ "year-2006", "finance", 0],
+[ "year-2006", "fintech", 0],
+[ "year-2006", "latest", 0],
+[ "year-2006", "modern", 0],
+[ "year-2006", "money", 0],
+[ "year-2006", "chat", 0],
+[ "year-2006", "startup", 0],
+[ "year-2007", "bank", 248, "pocket", 76, "assets", 91, "belly", 9, "loan", 104, "savings", 103, "unattended", 11, "merchant", 25, "microwave", 11, "mortgage", 80, "dealership", 5],
+[ "year-2007", "finance", 164, "biotech", 66, "geniteam", 10, "firms", 170, "banking", 69, "strategic", 66, "financial", 365, "funders", 12, "accel", 8, "israel", 25, "advisors", 29],
 [ "year-2007", "fintech", 0],
-[ "year-2007", "latest", 167, "bios", 10, "entries", 37, "eno", 5, "swan", 8, "cursor", 9, "scans", 7, "throughout", 50, "hall", 18, "presents", 32, "sketches", 5],
-[ "year-2007", "modern", 124, "suv", 4, "classical", 32, "density", 18, "representations", 5, "interpretation", 34, "russell", 11, "homegrown", 5, "expressive", 9, "evolutionary", 21, "oriented", 48],
-[ "year-2007", "money", 1666, "cash", 272, "equity", 269, "raise", 133, "statistically", 22, "risk", 281, "investors", 428, "risks", 83, "employees", 242, "debt", 82, "investment", 318],
-[ "year-2007", "chat", 115, "invite", 136, "sandwich", 9, "sent", 119, "sending", 91, "contact", 195, "visit", 128, "emails", 147, "bios", 10, "e-mail", 110, "demo", 297],
-[ "year-2007", "startup", 3341, "company", 1984, "start-up", 232, "full-time", 72, "cofounder", 477, "team", 601, "partner", 265, "business", 2060, "job", 1020, "product", 1062, "place", 742],
-[ "year-2008", "bank", 496, "credit", 846, "pension", 29, "savings", 255, "commission", 83, "debts", 41, "banks", 313, "mortgage", 155, "debit", 31, "withdraw", 29, "debt", 348],
-[ "year-2008", "finance", 343, "research", 1392, "engineering", 824, "top-tier", 28, "corporate", 686, "zurich", 12, "academia", 136, "degrees", 237, "circles", 80, "mathematics", 266, "pockets", 62],
+[ "year-2007", "latest", 252, "newest", 38, "nomenclature", 8, "sidebar", 27, "pmarca", 59, "footer", 13, "entries", 73, "archive", 62, "twine", 6, "journal", 73, "bandwagon", 21],
+[ "year-2007", "modern", 239, "oriented", 83, "natural", 282, "compilers", 46, "top-down", 18, "goo", 4, "algebraic", 6, "artificial", 128, "symbolic", 29, "procedural", 29, "classical", 55],
+[ "year-2007", "money", 3235, "cash", 450, "profit", 337, "loan", 104, "equity", 486, "investment", 622, "raise", 246, "debt", 163, "invest", 341, "effort", 481, "savings", 103],
+[ "year-2007", "chat", 178, "im", 191, "invite", 217, "forwarding", 18, "addresses", 131, "edu", 34, "emails", 216, "invites", 85, "odesk", 11, "collaborate", 55, "contact", 360],
+[ "year-2007", "startup", 5133, "start-up", 329, "company", 3511, "cofounder", 747, "team", 1012, "partner", 399, "startups", 2578, "project", 1394, "bootstrapping", 80, "firm", 301, "mattress", 9],
+[ "year-2008", "bank", 1101, "indymac", 7, "deposit", 101, "fdic", 70, "debt", 813, "loan", 388, "savings", 539, "mortgage", 387, "insured", 41, "banks", 760, "credit", 1846],
+[ "year-2008", "finance", 666, "financial", 1803, "banking", 364, "funds", 717, "fund", 998, "boutique", 35, "financing", 211, "international", 447, "sector", 292, "firms", 563, "research", 2643],
 [ "year-2008", "fintech", 0],
-[ "year-2008", "latest", 490, "over-priced", 6, "update", 607, "newest", 73, "randomize", 5, "sunrise", 5, "centro", 3, "releases", 335, "blasted", 11, "toc", 5, "rebar", 2],
-[ "year-2008", "modern", 523, "contemporary", 35, "leaky", 27, "architecture", 420, "natural", 574, "genetic", 159, "cognitive", 125, "procedural", 51, "modelling", 11, "biological", 77, "inheritence", 5],
-[ "year-2008", "money", 5425, "cash", 906, "investment", 872, "profits", 232, "profit", 635, "effort", 935, "borrowing", 38, "losses", 92, "borrow", 89, "them", 10797, "savings", 255],
-[ "year-2008", "chat", 377, "messages", 434, "im", 392, "updates", 338, "connect", 338, "emails", 451, "rooms", 96, "myspace", 474, "invites", 104, "photos", 371, "flickr", 384],
-[ "year-2008", "startup", 5891, "start-up", 567, "company", 5525, "business", 5557, "job", 3597, "venture-funded", 4, "startups", 2734, "firm", 469, "full-time", 269, "cofounder", 563, "vc", 1044],
+[ "year-2008", "latest", 830, "releases", 514, "newest", 109, "dubbed", 19, "released", 999, "unofficial", 45, "intrepid", 27, "upcoming", 218, "clickjacking", 21, "sparrow", 5, "psystar", 38],
+[ "year-2008", "modern", 1208, "neuro", 6, "classical", 206, "brokenness", 10, "waged", 10, "industrial", 266, "western", 363, "ecology", 21, "contemporary", 63, "photovoltaic", 16, "cnc", 13],
+[ "year-2008", "money", 11383, "cash", 1786, "profit", 1280, "discretionary", 29, "charity", 221, "profits", 546, "borrow", 217, "loan", 388, "loaning", 19, "investments", 510, "investment", 1709],
+[ "year-2008", "chat", 605, "im", 661, "gtalk", 56, "calendar", 288, "chatting", 108, "jabber", 68, "connect", 542, "notifications", 103, "chats", 32, "messaging", 296, "invites", 180],
+[ "year-2008", "startup", 8760, "start-up", 769, "company", 9987, "startups", 4431, "cofounder", 830, "angel-funded", 8, "solo", 132, "self-funded", 41, "bootstrapped", 108, "bootstrapping", 222, "firm", 776]
 [ "year-2009", "bank", 1178, "deposit", 102, "merchant", 174, "loan", 285, "debit", 29, "government-backed", 8, "credit", 1559, "creditor", 4, "account", 3170, "banks", 605, "gics", 3],
 [ "year-2009", "finance", 552, "financial", 1535, "banking", 362, "accounting", 314, "sector", 270, "firms", 486, "fund", 816, "sttr", 6, "industry", 2782, "grants", 128, "business", 9876],
 [ "year-2009", "fintech", 0],

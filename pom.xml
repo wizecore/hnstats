@@ -20,14 +20,13 @@
 		<datavec.version>0.9.1</datavec.version>
 		<arbiter.version>0.9.1</arbiter.version>
 		<rl4j.version>0.9.1</rl4j.version>
-		<nd4j.backend>nd4j-native-platform</nd4j.backend>
-		<!--
+		<!--  <nd4j.backend>nd4j-native-platform</nd4j.backend>  -->
 		<nd4j.backend>nd4j-cuda-8.0-platform</nd4j.backend>
-		-->
 		<scala.binary.version>2.11</scala.binary.version>
 		<guava.version>21.0</guava.version>
 	</properties>
 
+	<!-- deeplearning4j required? -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -37,25 +36,26 @@
 			</dependency>
 			<dependency>
 				<groupId>org.nd4j</groupId>
-				<artifactId>nd4j-cuda-7.5-platform</artifactId>
-				<version>${nd4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nd4j</groupId>
 				<artifactId>nd4j-cuda-8.0-platform</artifactId>
 				<version>${nd4j.version}</version>
 			</dependency>
-			        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-		
-	
+
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.api</groupId>
 			<artifactId>api-common</artifactId>
@@ -139,6 +139,7 @@
 			<artifactId>rxjava</artifactId>
 			<version>1.2.7</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-jdk14</artifactId>
@@ -149,6 +150,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.24</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
@@ -198,12 +200,12 @@
 				<version>2.6</version>
 			</plugin>
 			<plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-surefire-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.20</version>
-    			<configuration>
-        			<argLine>-Xmx7g</argLine>
-			    </configuration>
+				<configuration>
+					<argLine>-Xmx7g</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

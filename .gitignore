@@ -10,3 +10,5 @@ google-creds.json
 *.tsv
 *.log
 *.dll
+google-creds*.json
+*.db
