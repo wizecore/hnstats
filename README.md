@@ -1,4 +1,4 @@
-![HackerNews analytics](hnstats-ewan-robertson-208059.jpg)
+![HackerNews analytics](hnstats-ewan-robertson-208059.png)
 
 Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
 
