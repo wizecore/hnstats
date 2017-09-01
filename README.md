@@ -1,5 +1,21 @@
-# HackerNews analytics
-Using Google BigQuery public dataset produce some insight into the most discussed topics.
+![HackerNews analytics](hnstats-ewan-robertson-208059.png)
+
+Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
+
+## Ultimate reason
+
+  * Most discussed topics (and yearly shift)
+  * Top technology and startups
+
+## Technology behind it
+
+  * Java
+  * Deeplearning4J
+  * Word2vec
+
+## Project
+
+[Online version](http://wizecore.com/hnstats/terms.html)
 
 ## Roadmap
 - Gather data (DONE)
@@ -10,13 +26,9 @@ Using Google BigQuery public dataset produce some insight into the most discusse
 - Auto build SPA, i.e. push -> CI -> deploy (TODO)
 - Fine tune word2vec params (see below)
 
-## Demo
-http://wizecore.com/hnstats/terms.html
-
-Demo is single page HTML with all data precomputed and embedded.
-
 ## Source repo
-https://github.com/wizecore/hnstats
+
+Project is hosted on [GitHub](https://github.com/wizecore/hnstats)
 
 ## Building manually
 
@@ -24,7 +36,7 @@ https://github.com/wizecore/hnstats
 2. Fork this repo
 3. Fine tune queries inside code (terms, periods)
 4. Produce data.json
-5. Modify terms.json
+5. Modify terms.html
 
 ## Word2vec tuning
 
