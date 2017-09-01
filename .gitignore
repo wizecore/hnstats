@@ -13,3 +13,4 @@ google-creds.json
 google-creds*.json
 *.db
 *model*.zip
+/*.tdump

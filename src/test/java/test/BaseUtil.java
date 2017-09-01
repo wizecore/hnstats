@@ -9,12 +9,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.en.PorterStemFilter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.sequencevectors.SequenceVectors;
 import org.deeplearning4j.models.sequencevectors.enums.ListenerEvent;
@@ -26,11 +34,8 @@ import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
-import org.deeplearning4j.util.ModelSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.cloud.bigquery.FieldValue;
 
 public class BaseUtil {
 	Logger log = LoggerFactory.getLogger(getClass().getName());
@@ -171,6 +176,20 @@ public class BaseUtil {
 			topic.append(" ");
 		}
 	}
+	
+	public List<String> stem(String term) throws Exception {
+	    Analyzer analyzer = new StandardAnalyzer();
+	    TokenStream result = analyzer.tokenStream(null, term);
+	    result = new PorterStemFilter(result);
+	    result = new StopFilter(result, StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+	    CharTermAttribute resultAttr = result.addAttribute(CharTermAttribute.class);
+	    result.reset();
+	    List<String> tokens = new ArrayList<>();
+	    while (result.incrementToken()) {
+	        tokens.add(resultAttr.toString());
+	    }
+	    return tokens;
+	}
 
 	protected Object threadLock = new Object();
 
@@ -202,46 +221,54 @@ public class BaseUtil {
 		minLearningRate is the floor on the learning rate. Learning rate decays as the
 		number of words you train on decreases. If learning rate shrinks too much, the
 		net’s learning is no longer efficient. This keeps the coefficients moving.
+		
 		iterate tells the net what batch of the dataset it’s training on.
 		
 		tokenizer feeds it the words from the current batch.
 
 	 */
-	public void learn(String label, String[] words, LinkedList<String> ll, StringBuilder out) throws IOException {
+	public void learn(String label, String[] words, List<String> ll, String tsvFile, StringBuilder out) throws IOException {
 		synchronized (threadLock) {
-			int cnt = ll.size();
-			log.info(label + ": Load & Vectorize Sentences from " + cnt + " topics");
-			SentenceIterator iter = new ListSequenceIterator(ll);
-			TokenizerFactory t = new DefaultTokenizerFactory();
-			t.setTokenPreProcessor(new CommonPreprocessor());
-			
-			log.info(label + ": Building model from " + cnt + " topics");
-			Word2Vec vec = new Word2Vec.Builder()
-				.batchSize(512)
-		        .minWordFrequency(5)
-		        .iterations(1)
-		        .layerSize(100)
-		        .seed(System.currentTimeMillis())
-		        .windowSize(5)
-		        .iterate(iter)
-		        .tokenizerFactory(t)
-		        .setVectorsListeners(Arrays.asList(new VectorsListener[] { new VectorsListener<VocabWord>() {
-		        	@Override
-		        	public void processEvent(ListenerEvent event, SequenceVectors<VocabWord> sequenceVectors,
-		        			long argument) {
-		        	}
-		        	@Override
-		        	public boolean validateEvent(ListenerEvent event, long argument) {
-		        		return false;
-		        	}
-				}}))
-		        .build();
+			Word2Vec vec = null;
+			File modelFile = new File(label + "-model.zip");
+			if (modelFile.exists()) {
+				log.info(label + ": Loading model from " + modelFile);
+				vec = WordVectorSerializer.readWord2VecModel(modelFile);
+			} else {
+				log.info(label + ": Load & Vectorize Sentences from " + tsvFile + ", size " + new File(tsvFile).length() + " bytes");
+				SentenceIterator iter = ll != null ? new ListSequenceIterator(ll) : new BasicLineIterator(tsvFile);
+				TokenizerFactory t = new DefaultTokenizerFactory();
+				t.setTokenPreProcessor(new CommonPreprocessor());
+				
+				log.info(label + ": Building model...");
+				vec = new Word2Vec.Builder()
+					.batchSize(512)
+			        .minWordFrequency(5)
+			        .iterations(1)
+			        .layerSize(100)
+			        .seed(System.currentTimeMillis())
+			        .windowSize(5)
+			        .iterate(iter)
+			        .tokenizerFactory(t)
+			        .minLearningRate(0.001) // 
+			        .setVectorsListeners(Arrays.asList(new VectorsListener[] { new VectorsListener<VocabWord>() {
+			        	@Override
+			        	public void processEvent(ListenerEvent event, SequenceVectors<VocabWord> sequenceVectors,
+			        			long argument) {
+			        	}
+			        	@Override
+			        	public boolean validateEvent(ListenerEvent event, long argument) {
+			        		return false;
+			        	}
+					}}))
+			        .build();
 
-			log.info(label + ": Fitting Word2Vec model from " + cnt + " topics");
-			vec.fit();
-			
-			log.info(label + ": Saving model");
-			WordVectorSerializer.writeWord2VecModel(vec, new File(label + "-model.zip"));
+				log.info(label + ": Fitting Word2Vec model");
+				vec.fit();
+				
+				log.info(label + ": Saving model");
+				WordVectorSerializer.writeWord2VecModel(vec, modelFile);
+			}
 
 			VocabCache<VocabWord> vocab = vec.getVocab();
 			for (int i = 0; i < words.length; i++) {

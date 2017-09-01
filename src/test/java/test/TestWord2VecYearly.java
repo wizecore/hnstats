@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -18,15 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Pattern;
 
-import org.deeplearning4j.models.word2vec.VocabWord;
-import org.deeplearning4j.models.word2vec.Word2Vec;
-import org.deeplearning4j.models.word2vec.wordstore.VocabCache;
-import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
-import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
-import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
-import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -58,8 +48,8 @@ public class TestWord2VecYearly extends BaseUtil {
 	public void test() throws IOException, InterruptedException, TimeoutException, ExecutionException {
 		ExecutorService threads = null; 
 		// threads = Executors.newFixedThreadPool(3);
-		int s = 2011;
-		int e = 2013;
+		int s = 2012;
+		int e = 2017;
 		String[] words = { "bank", "finance", "fintech", "latest", "modern", "money", "chat", "startup" };
 		Calendar st = Calendar.getInstance();
 		Calendar en = Calendar.getInstance();
@@ -198,7 +188,7 @@ public class TestWord2VecYearly extends BaseUtil {
 		
 		log.info(label + ": Total text lines " + ll.size());
 		if (ll.size() > 0) {
-	        learn(label, words, ll, out);
+	        learn(label, words, ll, null, out);
 		}
 	}
 
