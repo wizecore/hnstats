@@ -274,7 +274,7 @@ function loop(ctx) {
 	}
 
 	ctx.c.words(w.map(function(d) {
-      return { text: d, size: 10 + wrdc(ctx.yr, ctx.cat, d) / 5, test: "xxxx" };
+      return { text: d, size: 10 + Math.min(wrdc(ctx.yr, ctx.cat, d) / 70, 60), test: "xxxx" };
     }))
 
 	ctx.c.start();
