@@ -29,7 +29,7 @@
 [ "year-2010", "bank", 5920, "hsbc", 44, "debit", 294, "fdic-insured", 7, "deposit", 597, "credit", 5984, "loan", 1963, "brokerage", 109, "issuer", 91, "barclays", 33, "paypal", 2411],
 [ "year-2010", "finance", 1809, "accounting", 934, "financial", 4646, "banking", 1057, "analyst", 606, "quant", 215, "quantitative", 345, "pwc", 15, "firm", 3050, "mining", 580, "toptier", 100],
 [ "year-2010", "fintech", 0],
-[ "year-2010", "latest", 3021, "newest", 463, "upcome", 419, "newer", 1182, "httpwwwtrackuappcom", 5, "chromium", 525, "beta", 3105, "version", 16158, "nightly", 291, "non-beta", 8, "lts", 94],
+[ "year-2010", "latest", 3021, "newest", 463, "upcome", 419, "newer", 1182, "chromium", 525, "beta", 3105, "version", 16158, "nightly", 291, "non-beta", 8, "lts", 94],
 [ "year-2010", "modern", 5275, "ela", 4, "powerful", 3860, "pure", 2892, "advanced", 2066, "generalpurpose", 213, "ancient", 793, "locomotion", 11, "standard", 11984, "featureful", 45, "programing", 60],
 [ "year-2010", "money", 33879, "cash", 4682, "profit", 5844, "investment", 5512, "handsomely", 53, "distributors", 7, "effort", 8188, "reinvest", 146, "savings", 1504, "fuck-you", 22, "wastefully", 12],
 [ "year-2010", "chat", 2565, "irc", 1048, "im", 1595, "invite", 1836, "skype", 1570, "calendar", 940, "notification", 1337, "campfire", 137, "bitlbee", 17, "chatroom", 69, "messageparty", 9],
@@ -46,7 +46,7 @@
 [ "year-2011", "modern", 7202, "ancient", 933, "generalpurpose", 249, "powerful", 5043, "embedded", 1471, "alchemy", 70, "brain-like", 13, "advanced", 2813, "graphical", 687, "basic", 9423, "architecture", 3397],
 [ "year-2012", "bank", 8066, "deposit", 855, "ach", 131, "debit", 578, "banking", 1457, "creditdebit", 36, "echeck", 5, "merchant", 1387, "paypal", 3237, "transaction", 4133, "fdic", 62],
 [ "year-2012", "finance", 2568, "financial", 6301, "aerospace", 257, "firm", 4270, "corporate", 5275, "recruiting", 562, "funded", 435, "sector", 2139, "wellpaying", 43, "dept", 305, "biotech", 222],
-[ "year-2012", "fintech", 14, "yplan", 2, "=============", 6, "energysavvy", 5, "seed-funded", 11, "litl", 5, "tech-startup", 13, "leaders", 48, "fastgrowing", 82, "httpmindsnackstheresumatorcomapplyqkgdtjproducerhtm", 5, "livemagic", 3],
+[ "year-2012", "fintech", 14, "yplan", 2, "energysavvy", 5, "seed-funded", 11, "litl", 5, "tech-startup", 13, "leaders", 48, "fastgrowing", 82, "livemagic", 3],
 [ "year-2012", "latest", 6166, "newest", 783, "newer", 1960, "upcome", 750, "release", 20797, "version", 26678, "quantal", 27, "cloudmunch", 5, "dev-team", 5, "edition", 1741, "coming", 437],
 [ "year-2012", "modern", 9345, "ancient", 1177, "embedded", 1976, "traditional", 5037, "electromechanical", 10, "pure", 4577, "stateoftheart", 143, "gpgpu", 74, "contemporary", 605, "archaic", 291, "universal", 2227],
 [ "year-2012", "money", 47967, "cash", 6921, "profit", 9884, "launderer", 9, "investment", 7679, "earn", 4582, "taxpayer", 705, "invest", 7369, "savings", 1974, "spendable", 8, "charity", 1668],
@@ -86,7 +86,7 @@
 [ "year-2016", "latest", 9102, "newest", 1129, "newer", 4221, "release", 29962, "upcome", 1019, "non-lts", 14, "stealthwalker", 2, "anniversary", 523, "sierra", 697, "version", 39129, "xp", 1319],
 [ "year-2016", "modern", 21766, "generalpurpose", 677, "embedded", 4385, "design", 49536, "warehouse-scale", 6, "contemporary", 1144, "functional", 8389, "advanced", 6020, "powerful", 11244, "ancient", 2900, "highperformance", 524],
 [ "year-2016", "money", 72942, "cash", 11629, "profit", 14229, "investment", 12694, "savings", 4253, "capital", 9236, "hoard", 675, "reinvest", 417, "paycheck", 1162, "taxpayer", 1380, "earn", 7695],
-[ "year-2016", "chat", 7688, "slack", 6315, "irc", 2543, "skype", 2761, "messaging", 2644, "hangout", 843, "messenger", 2492, "chatible", 6, "chatroom", 102, "telegram", 1163, "jobs@pilotlightstudioscom", 5],
+[ "year-2016", "chat", 7688, "slack", 6315, "irc", 2543, "skype", 2761, "messaging", 2644, "hangout", 843, "messenger", 2492, "chatible", 6, "chatroom", 102, "telegram", 1163],
 [ "year-2016", "startup", 31558, "entrepreneur", 3495, "founder", 8983, "earlystage", 327, "vc", 5656, "bootstrapp", 1117, "angel", 897, "venture", 3316, "company", 111831, "yc", 6232, "prerevenue", 41],
 [ "year-2016", "modern", 21766, "generalpurpose", 677, "embedded", 4385, "design", 49536, "warehouse-scale", 6, "contemporary", 1144, "functional", 8389, "advanced", 6020, "powerful", 11244, "ancient", 2900, "highperformance", 524],
 [ "year-2017", "bank", 7640, "paypal", 1111, "credit", 6367, "deposit", 825, "brokerage", 225, "atm", 635, "banking", 1444, "debit", 562, "cash", 5872, "citi", 44, "depositor", 22],
@@ -97,5 +97,6 @@
 [ "year-2017", "money", 38453, "cash", 5872, "profit", 7787, "investment", 6735, "savings", 2285, "fund", 8148, "hnw", 7, "effort", 11601, "debt", 3870, "invest", 6807, "capital", 4871],
 [ "year-2017", "chat", 3995, "slack", 3225, "messaging", 1329, "hangout", 536, "irc", 1016, "telegram", 680, "messenger", 1333, "skype", 1178, "reactiflux", 23, "gitter", 141, "discord", 402],
 [ "year-2017", "startup", 14998, "founder", 4412, "incubator", 219, "entrepreneur", 1632, "bootstrapp", 583, "venturebacked", 71, "venture", 1558, "tech", 18252, "vc", 2701, "sv", 1494, "scrappy", 76],
-[ "year-2017", "modern", 11639, "advanced", 3096, "ancient", 1592, "computing", 3040, "generalpurpose", 314, "powerful", 5750, "contemporary", 574, "design", 24658, "develop", 13246, "conventional", 1053, "standard", 16467],
+[ "year-2017", "modern", 11639, "advanced", 3096, "ancient", 1592, "computing", 3040, "generalpurpose", 314, "powerful", 5750, "contemporary", 574, "design", 24658, "develop", 13246, "conventional", 1053, "standard", 16467]
 ]
+
