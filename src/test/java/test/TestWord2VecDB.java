@@ -32,7 +32,7 @@ public class TestWord2VecDB extends BaseUtil {
 		opendb();
 		
 		Statement sql = conn.createStatement();
-		int s = 2016;
+		int s = 2007;
 		int e = 2017;
 		Set<String> aliases = readHyphenatedAliases();
 		String[] words = { "bank", "finance", "fintech", "latest", "modern", "money", "chat", "startup", "modern" };

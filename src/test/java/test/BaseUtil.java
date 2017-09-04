@@ -348,6 +348,8 @@ public class BaseUtil {
 			    }
 			    out.append("],\n");
 			}
+			
+			System.out.println(label + ": " + vec.wordsNearest(Arrays.asList("google", "russia"), Arrays.asList("usa"), 10));
 		}
 	}
 }
