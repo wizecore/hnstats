@@ -1,25 +1,32 @@
 package test;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -31,6 +38,7 @@ import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.models.word2vec.wordstore.VocabCache;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
+import org.deeplearning4j.text.tokenization.tokenizer.Tokenizer;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
@@ -38,7 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BaseUtil {
-	Logger log = LoggerFactory.getLogger(getClass().getName());
+	protected Logger log = LoggerFactory.getLogger(getClass().getName());
 	long maxid;
 	Connection conn;
 	
@@ -47,6 +55,11 @@ public class BaseUtil {
 		System.getProperties().put( "socksProxyHost", "127.0.0.1" );
 		System.getProperties().put( "socksProxyPort", "3128" );
 		
+	}
+	
+	public String timeLine(String objectName, long start, int count) {
+		long now = System.currentTimeMillis();
+		return "Elapsed " + (now - start)/1000 + "s, avg " +  Math.round(1000.0 * count / (now - start)) + " " + objectName + "/s";
 	}
 	
 	public void opendb() throws SQLException {
@@ -128,6 +141,49 @@ public class BaseUtil {
 	public void closedb() throws SQLException {
 		conn.close();
 	}
+	
+	StanfordLemmatizer lem = new StanfordLemmatizer();
+	
+	public String lemmatize(String s) {
+		return lem.lemmatizeText(s);
+	}
+	
+	public String tokenize(String terms, Collection<String> aliases) throws IOException {
+		if (terms == null) {
+			return null;
+		}
+		TokenizerFactory t = new DefaultTokenizerFactory();
+		t.setTokenPreProcessor(new CommonPreprocessor());
+		Tokenizer tk = t.create(terms);
+		StringBuilder buf = new StringBuilder();
+		while (tk.hasMoreTokens()) {
+			String w = tk.nextToken();
+			if (aliases != null) {
+				if (aliases.contains(w)) {
+					w = w.replace("-", "");
+				}
+			}
+			if (buf.length() > 0) {
+				buf.append(" ");
+			}
+			buf.append(w);
+		}
+		return buf.toString();
+	}
+
+	public Set<String> readHyphenatedAliases() throws FileNotFoundException, UnsupportedEncodingException, IOException {
+		Set<String> aliases = new HashSet<>();
+		FileInputStream fis = new FileInputStream("hyphenated-alias.txt");
+		BufferedInputStream fisb = new BufferedInputStream(fis, 1024 * 1024);
+		InputStreamReader isr = new InputStreamReader(fisb, "UTF-8");
+		BufferedReader br = new BufferedReader(isr);
+		String w = null;
+		while ((w = br.readLine()) != null) {
+			aliases.add(w);
+		}
+		fis.close();
+		return aliases;
+	}
 
 	Pattern tags = Pattern.compile("\\<[^>]*>");
 	Pattern urls = Pattern.compile( "((https?|ftp|gopher|telnet|file|Unsure|http):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)", Pattern.CASE_INSENSITIVE);
@@ -173,23 +229,30 @@ public class BaseUtil {
 			sss = spaces.matcher(sss).replaceAll(" ");
 			sss = sss.trim();
 			topic.append(sss);
-			topic.append(" ");
 		}
 	}
 	
-	public List<String> stem(String term) throws Exception {
+	/*
+	public String stem(String term) throws IOException {
+		if (term == null) {
+			return null;
+		}
 	    Analyzer analyzer = new StandardAnalyzer();
 	    TokenStream result = analyzer.tokenStream(null, term);
 	    result = new PorterStemFilter(result);
 	    result = new StopFilter(result, StopAnalyzer.ENGLISH_STOP_WORDS_SET);
 	    CharTermAttribute resultAttr = result.addAttribute(CharTermAttribute.class);
 	    result.reset();
-	    List<String> tokens = new ArrayList<>();
+	    StringBuilder tokens = new StringBuilder();
 	    while (result.incrementToken()) {
-	        tokens.add(resultAttr.toString());
+	    	if (tokens.length() > 0) {
+	    		tokens.append(" ");
+	    	}
+	        tokens.append(resultAttr.toString());
 	    }
-	    return tokens;
+	    return tokens.toString();
 	}
+	*/
 
 	protected Object threadLock = new Object();
 

@@ -48,7 +48,38 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<!-- https://github.com/minio/minio-java -->
+		<dependency>
+		    <groupId>io.minio</groupId>
+		    <artifactId>minio</artifactId>
+		    <version>3.0.6</version>
+		</dependency>
+		<!--  https://stanfordnlp.github.io/CoreNLP/ -->
+		<dependency>
+		    <groupId>edu.stanford.nlp</groupId>
+		    <artifactId>stanford-corenlp</artifactId>
+		    <version>3.8.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>edu.stanford.nlp</groupId>
+		    <artifactId>stanford-corenlp</artifactId>
+		    <version>3.8.0</version>
+		    <classifier>models</classifier>
+		</dependency>
+		<!-- https://github.com/alexeyev/mystem-scala -->
+		<dependency>
+			<groupId>ru.stachek66.nlp</groupId>
+			<artifactId>mystem-scala</artifactId>
+			<version>0.1.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<!--  https://stackoverflow.com/questions/43621672/stemming-english-words-using-lucene-6 -->
+		<!-- this uses 6.5 but stanford NLP uses older version 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
@@ -59,6 +90,7 @@
 			<artifactId>lucene-analyzers-common</artifactId>
 			<version>6.5.0</version>
 		</dependency>
+		-->
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>

@@ -8,7 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
 import org.junit.Test;
@@ -23,13 +28,14 @@ public class TestWord2VecDB extends BaseUtil {
 	}
 
 	@Test
-	public void test() throws SQLException, IOException {
+	public void test() throws SQLException, IOException, InterruptedException {
 		opendb();
 		
 		Statement sql = conn.createStatement();
-		int s = 2013;
+		int s = 2016;
 		int e = 2017;
-		String[] words = { "bank", "finance", "fintech", "latest", "modern", "money", "chat", "startup" };
+		Set<String> aliases = readHyphenatedAliases();
+		String[] words = { "bank", "finance", "fintech", "latest", "modern", "money", "chat", "startup", "modern" };
 		StringBuilder out = new StringBuilder();
 		
 		for (int i = s; i <= e; i++) {
@@ -46,6 +52,7 @@ public class TestWord2VecDB extends BaseUtil {
 				en.add(Calendar.YEAR, 1);
 				long stu = (long) Math.floor(st.getTimeInMillis() / 1000);
 				long enu = (long) Math.floor(en.getTimeInMillis() / 1000);
+				long startTime = System.currentTimeMillis();
 				log.info("Getting result for " + i + ", range " + stu + " .. " + enu);
 				ResultSet rs = sql.executeQuery("select count(*) from hnews where time >= " + stu + " and time <= " + enu + " and (dead = false or dead is null) and (deleted = false or deleted is null)");
 				if (rs != null && rs.next()) {
@@ -57,30 +64,49 @@ public class TestWord2VecDB extends BaseUtil {
 				
 				FileOutputStream fos = new FileOutputStream(tsvFile);
 				OutputStreamWriter tsv = new OutputStreamWriter(fos, "UTF-8");
-				int count = 0;
+				final AtomicInteger count = new AtomicInteger(0);
+				ExecutorService p = Executors.newFixedThreadPool(12);
 				while (rs != null && rs.next()) {
 					String title = rs.getString(2);
 					String text = rs.getString(3);
 					long id = rs.getLong(4);
-					StringBuilder topic = new StringBuilder();
-					parseValue(topic, title);
-					parseValue(topic, text);
-					tsv.write(String.valueOf(id));
-					tsv.write("\t");
-					String l = topic.toString();
-					tsv.write(l);
-					tsv.write("\n");
-					count ++;
-					if (count % 10000 == 0 && count > 0) {
-						log.info("Ready " + count + " lines");
-					}
+					
+					p.submit(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								StringBuilder topic = new StringBuilder();
+								topic.append(id);
+								topic.append("\t");
+								parseValue(topic, tokenize(lemmatize(title), aliases));
+								topic.append("\t");
+								parseValue(topic, tokenize(lemmatize(text), aliases));
+								String l = topic.toString();
+								
+								synchronized (tsv) {
+									tsv.write(l);
+									tsv.write("\n");
+								}
+								count.incrementAndGet();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+				
+				p.shutdown();
+				while (!p.isTerminated()) {
+					p.awaitTermination(5, TimeUnit.SECONDS);
+					log.info("Ready " + count + " lines, " + timeLine("lines", startTime, count.get()));
 				}
 				
 				tsv.close();
 				fos.close();
 			}
 			
-			log.info("Got file " + new File(tsvFile).length() + " bytes");
+			log.info(year + ": Got file " + new File(tsvFile).length() + " bytes");
+			
 			StringBuilder lout = new StringBuilder();
 			learn("year-" + year, words, null, tsvFile, lout);
 			System.out.println(lout);

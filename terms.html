@@ -15,40 +15,56 @@
 
 		.term-cloud {
 			display: inline-block;
-		}
+			xbackground: #d0d0d0;
+			margin: 8px;
+			border: 1px solid #d0d0d0;
+			border-radius: 4px;
+		}   
 
 		.term {
-			text-align: center; font-size: 2em; width: 350px;
+			text-align: center; font-size: 2em; width: 450px;
 		}
 
 		.cloud {
-			width: 350px; border: 1px solid #d0d0d0;
+			width: 450px; border-top: 1px solid #d0d0d0; 
+			border-bottom: 1px solid #d0d0d0;
 		}
 
 		.controls {
-			width: 350px; text-align: center; vertical-align: middle; margin-top: 4px; margin-left: 70px;
+			width: 450px;
+			text-align: center;
+			vertical-align: middle; 
+			margin-top: 5px; 
 		}
 
 		.year {
-			float: left; height: 30px; vertical-align: middle; margin-top: 6px;
+			vertical-align: middle;
 		}
 
 		.slider-holder {
-			display: inline-block; border: 0px solid black; margin-top: 5px; float: left; height: 30px;
+			display: inline-block; 
+		}
+
+		.slider-holder input {
+			margin-top: 0px;
 		}
 
 		.autobtn-holder {
-			display: inline-block; border: 0px solid black; float: left; height: 30px; margin-top: 8px;
+			display: inline-block; 
+			border: 0px solid black; 
+			xheight: 30px; 
+			xmargin-top: 8px;
 		}
 	</style>
 </head>
 <body>
-<h1>Closest words to selected terms (word2vec) at Hacker News 2007 - 2017 articles and comments</h1>
+<h1>Closest words to selected terms (word2vec) at Hacker News articles and comments</h1>
 <div>
 	<code>
-		<a href="https://news.ycombinator.com">Hackernews</a> titles, texts &amp; comments ->
-		<a href="https://deeplearning4j.org/word2vec">deeplearning4j word2vec</a> -> json ->
-		<a href="https://github.com/jasondavies/d3-cloud">d3 cloud renderer</a>
+		<a href="https://news.ycombinator.com">Hackernews</a> titles, texts &amp; comments
+		(via <a href="http://hn-archive.appspot.com/">http://hn-archive.appspot.com/</a>) ->
+		tokenizing -> lemmatizing -> dehyphenation -> <a href="https://deeplearning4j.org/word2vec">word2vec</a> clustered by year -> json ->
+		closest words -> <a href="https://github.com/jasondavies/d3-cloud">d3 cloud renderer</a>
 	</code>
 	
 	(<a href="https://github.com/wizecore/hnstats">Source repo</a>) (<a href="https://en.wikipedia.org/wiki/Word2vec">Word2vec</a>)
@@ -95,6 +111,30 @@ function wrdc(y, cat, w) {
 
 	return 0;
 }
+
+function wrdavgc(y, cat) {
+	if (dc["__avg"] !== undefined) {
+		return dc[y + "-" + cat + "-" + "__avg"];
+	}
+
+	for (var i = 0; i < data.length; i++) {
+		var dd = data[i];
+		if (dd[0] == "year-" + y && dd[1] == cat) {
+			var avg = 0.0;
+			var c = 0;
+			for (j = 3; j < dd.length; j = j + 2) {
+				avg += dd[j + 1];
+				c ++;				
+			}
+			avg = Math.round(avg / c);
+			dc[y + "-" + cat + "-" + "__avg"] = avg;
+			return avg;
+		}
+	}	
+
+	return 0;
+}
+
 
 function wrds(y, cat) {
 	for (var i = 0; i < data.length; i++) {
@@ -184,7 +224,9 @@ function loop(ctx) {
 	}
 
 	ctx.c.words(w.map(function(d) {
-      return { text: d, size: 10 + Math.min(wrdc(ctx.yr, ctx.cat, d) / 70, 60), test: "xxxx" };
+		var avgc = wrdavgc(ctx.yr, ctx.cat);
+		console.log(ctx.yr + ", " + ctx.cat + ", avgc " + avgc);
+		return { text: d, size: 10 + Math.min(wrdc(ctx.yr, ctx.cat, d) / 20, 80), test: "xxxx" };
     }))
 
 	ctx.c.start();
@@ -215,7 +257,7 @@ function actx(yr, cat) {
 	ctx.timerId = null;
 	ctx.c = d3.layout.cloud();
 	ctx.fill = d3.scale.category20();
-	ctx.c.size([ 350, 350 ]);
+	ctx.c.size([ 450, 450 ]);
 	ctx.c.padding(5);
 	ctx.c.rotate(0);
 	ctx.c.font("Impact");

@@ -12,6 +12,8 @@ Using publicically available [HackerNews](https://news.ycombinator.com) dataset 
   * Java
   * Deeplearning4J
   * Word2vec
+  * Stanford CoreNLP (lemmatizing)
+  * 
 
 ## Project
 
