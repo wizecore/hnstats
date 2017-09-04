@@ -2,6 +2,8 @@
 
 Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
 
+![T](https://t.wizecore.com/p.php?idsite=1&rec=1)
+
 ## Ultimate reason
 
   * Most discussed topics (and yearly shift)
@@ -13,7 +15,6 @@ Using publicically available [HackerNews](https://news.ycombinator.com) dataset 
   * Deeplearning4J
   * Word2vec
   * Stanford CoreNLP (lemmatizing)
-  * 
 
 ## Project
 
