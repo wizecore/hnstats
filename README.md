@@ -1,9 +1,9 @@
 ![HackerNews analytics](hnstats-ewan-robertson-208059.png)
 
 Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
-
-![T](https://t.wizecore.com/p.php?idsite=1&rec=1)
-
+,
+![T](https://t.wizecore.com/p.php?idsite=1&rec=1&action_name=hnstats_github)
+,
 ## Ultimate reason
 
   * Most discussed topics (and yearly shift)
