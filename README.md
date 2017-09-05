@@ -1,9 +1,7 @@
 ![HackerNews analytics](hnstats-ewan-robertson-208059.png)
 
-Using publicically available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most discussed topics.
-,
-![T](https://t.wizecore.com/p.php?idsite=1&rec=1&action_name=hnstats_github)
-,
+Using available [HackerNews](https://news.ycombinator.com) dataset produce some insight into the most meaningful topics.
+
 ## Ultimate reason
 
   * Most discussed topics (and yearly shift)
@@ -32,14 +30,6 @@ Using publicically available [HackerNews](https://news.ycombinator.com) dataset 
 ## Source repo
 
 Project is hosted on [GitHub](https://github.com/wizecore/hnstats)
-
-## Building manually
-
-1. Create Google Cloud project & add BigQuery perms
-2. Fork this repo
-3. Fine tune queries inside code (terms, periods)
-4. Produce data.json
-5. Modify terms.html
 
 ## Word2vec tuning
 
